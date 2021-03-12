@@ -1,0 +1,182 @@
+[
+  {
+    "type": "single-slider",
+    "key": "Exposure",
+    "camera": 0,
+    "config": {
+      "min": 1,
+      "max": 200
+    }
+  },
+  {
+    "type": "single-slider",
+    "key": "Brightness",
+    "camera": 0,
+    "config": {
+      "min": -64,
+      "max": 127
+    },
+    "initial": {
+      "value": 0
+    }
+  },
+  {
+    "type": "single-slider",
+    "key": "Contrast",
+    "camera": 0,
+    "config": {
+      "min": 0,
+      "max": 127
+    },
+    "initial": {
+      "value": 32
+    }
+  },
+  {
+    "type": "single-slider",
+    "key": "Cam Hue",
+    "camera": 0,
+    "config": {
+      "min": -40,
+      "max": 40
+    },
+    "initial": {
+      "value": 0
+    }
+  },
+  {
+    "type": "single-slider",
+    "key": "White Bal",
+    "camera": 0,
+    "config": {
+      "min": 2800,
+      "max": 6500
+    },
+    "initial": {
+      "value": 4600
+    }
+  },
+  {
+    "type": "double-slider",
+    "key": "Hue",
+    "camera": 0,
+    "config": {
+      "min": 0,
+      "max": 180
+    }
+  },
+  {
+    "type": "double-slider",
+    "key": "Saturation",
+    "camera": 0,
+    "config": {
+      "min": 0,
+      "max": 255
+    }
+  },
+  {
+    "type": "double-slider",
+    "key": "Value",
+    "camera": 0,
+    "config": {
+      "min": 0,
+      "max": 255
+    }
+  },
+  {
+    "type": "drop-down",
+    "key": "threshold",
+    "camera": 0,
+    "config": {
+      "title": "Threshold",
+      "selections": [
+        "Threshold",
+        "Color"
+      ]
+    },
+    "initial": {
+      "value": "Threshold"
+    }
+  },
+  {
+    "type": "drop-down",
+    "key": "contours",
+    "camera": 0,
+    "config": {
+      "title": "Contours",
+      "selections": [
+        "Show",
+        "Hide"
+      ]
+    },
+    "initial": {
+      "value": "Show"
+    }
+  },
+  {
+    "type": "drop-down",
+    "key": "filter",
+    "camera": 0,
+    "config": {
+      "title": "Filter Mode",
+      "selections": [
+        "largest", "smallest", "leftmost", "rightmost", "centermost", "lowest", "highest"
+      ]
+    },
+    "initial": {
+      "value": "largest"
+    }
+  },
+  {
+    "type": "double-slider",
+    "key": "Size",
+    "camera": 0,
+    "config": {
+      "min": 0,
+      "max": 100
+    }
+  },
+  {
+    "type": "double-slider",
+    "key": "W/H Ratio",
+    "camera": 0,
+    "config": {
+      "min": 0,
+      "max": 100
+    }
+  },
+  {
+    "type": "double-slider",
+    "key": "X Range",
+    "camera": 0,
+    "config": {
+      "min": 0,
+      "max": 100
+    }
+  },
+  {
+    "type": "double-slider",
+    "key": "Y Range",
+    "camera": 0,
+    "config": {
+      "min": 0,
+      "max": 100
+    }
+  },
+  {
+    "type": "value-display",
+    "key": "position",
+    "camera": 0,
+    "config": {
+      "format": "{}"
+    }
+  },
+  {
+    "type": "value-display",
+    "key": "robot-position",
+    "camera": 0,
+    "config": {
+      "format": "Left: ({}, {})  Right: ({}, {})  Robot Position: ({}, {})"
+    }
+  }
+]

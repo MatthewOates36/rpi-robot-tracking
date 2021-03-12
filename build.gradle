@@ -1,0 +1,81 @@
+plugins {
+    id 'java'
+    id 'org.hidetake.ssh' version '2.10.1'
+}
+
+group 'org.team1619'
+
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
+configurations {
+    jarLibs
+    implementation.extendsFrom jarLibs
+}
+
+repositories {
+    maven {
+        url "https://frcmaven.wpi.edu/artifactory/release/"
+    }
+}
+
+dependencies {
+    jarLibs fileTree(dir: 'libs', include: ['*.jar'])
+
+    jarLibs "edu.wpi.first.ntcore:ntcore-java:2021.2.2"
+    jarLibs "edu.wpi.first.wpiutil:wpiutil-java:2021.2.2"
+    jarLibs "edu.wpi.first.ntcore:ntcore-jni:2021.2.2:linuxraspbian"
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'org.team1619.Main'
+    }
+    baseName 'rpi-robot-tracking'
+    from {
+        files('src')
+        configurations.jarLibs.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
+
+remotes {
+    server {
+        host = 'vision-rpi.local'
+        user = 'pi'
+        identity = new File(System.properties['user.home'] + '/.ssh/id_rsa')
+    }
+}
+
+task deploy {
+    dependsOn jar
+
+    doLast {
+        // Useful commands
+        // ssh-copy-id -i ~/.ssh/id_rsa.pub username@yourwebserver.com
+
+        // sshfs root@www.matthewo.tech:/ ~/Desktop/www-matthewo-tech
+        // sudo diskutil unmount force ~/Desktop/www-matthewo-tech
+
+        ssh.run {
+            session(remotes.server) {
+                put from: file('./build/libs/rpi-robot-tracking.jar'), into: 'rpi-robot-tracking.jar'
+            }
+        }
+    }
+}
+
+task run {
+    dependsOn deploy
+
+    doLast {
+        ssh.run {
+//            export LD_LIBRARY_PATH="/home/pi/libs:$LD_LIBRARY_PATH"
+//            java -Djava.library.path="libs/" -jar rpi-robot-tracking.jar
+            session(remotes.server) {
+                execute 'sudo ./run.sh', ignoreError: true
+            }
+        }
+    }
+}
