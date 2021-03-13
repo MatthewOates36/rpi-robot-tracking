@@ -7,7 +7,7 @@ public class Localization {
 
     private static final double LEFT_ANGLE_OFFSET = 90.0;
     private static final double RIGHT_ANGLE_OFFSET = 90.0;
-    private static final double LIMELIGHT_DISTANCE = 48.0;
+    private static final double LIMELIGHT_DISTANCE = 54.0;
     private final Point offset;
 
 

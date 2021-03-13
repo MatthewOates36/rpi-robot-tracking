@@ -165,18 +165,18 @@
   },
   {
     "type": "value-display",
-    "key": "position",
-    "camera": 0,
-    "config": {
-      "format": "{}"
-    }
-  },
-  {
-    "type": "value-display",
     "key": "robot-position",
     "camera": 0,
     "config": {
       "format": "Left: ({}, {})  Right: ({}, {})  Robot Position: ({}, {})"
+    }
+  },
+  {
+    "type": "value-display",
+    "key": "position",
+    "camera": 0,
+    "config": {
+      "format": "{}"
     }
   }
 ]

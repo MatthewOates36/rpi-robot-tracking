@@ -21,10 +21,10 @@ public class Main {
 
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
-        Camera camera1 = new Camera(CameraDetector.getCameraFromId("USB 2.0 Camera: USB Camera (usb-0000:01:00.0-1.1)").getPaths().get(0));
-        Camera camera2 = new Camera(CameraDetector.getCameraFromId("USB 2.0 Camera: USB Camera (usb-0000:01:00.0-1.2)").getPaths().get(0), 1.6);
-        Camera camera3 = new Camera(CameraDetector.getCameraFromId("USB 2.0 Camera: USB Camera (usb-0000:01:00.0-1.3)").getPaths().get(0), 0.6);
-        Camera camera4 = new Camera(CameraDetector.getCameraFromId("USB 2.0 Camera: USB Camera (usb-0000:01:00.0-1.4)").getPaths().get(0));
+        Camera camera1 = new Camera(CameraDetector.getCameraFromId("USB 2.0 Camera: USB Camera (usb-0000:01:00.0-1.1)").getPaths().get(0), 0.3);
+        Camera camera2 = new Camera(CameraDetector.getCameraFromId("USB 2.0 Camera: USB Camera (usb-0000:01:00.0-1.2)").getPaths().get(0), 1.5);
+        Camera camera3 = new Camera(CameraDetector.getCameraFromId("USB 2.0 Camera: USB Camera (usb-0000:01:00.0-1.3)").getPaths().get(0), 3.1);
+        Camera camera4 = new Camera(CameraDetector.getCameraFromId("USB 2.0 Camera: USB Camera (usb-0000:01:00.0-1.4)").getPaths().get(0), 1.0);
 
         List<Camera> cameras = List.of(camera1, camera2, camera3, camera4);
 
@@ -60,7 +60,7 @@ public class Main {
         var server = new WebServer();
 
         var leftLocalization = new Localization(new Point(0, 30));
-        var rightLocalization = new Localization(new Point(0, 18));
+        var rightLocalization = new Localization(new Point(0, 24));
 
         var robotConnection = new RobotConnection();
 
@@ -97,7 +97,7 @@ public class Main {
 
             var robotPosition = new Vector(leftRobotPosition.add(rightRobotPosition)).scale(0.5);
 
-            robotConnection.update(images.stream().allMatch(ProcessedImage::hasValidContour), robotPosition.getX(), robotPosition.getY());
+            robotConnection.update(images.stream().allMatch(ProcessedImage::hasValidContour), robotPosition.getX(), -robotPosition.getY());
 
             server.setValue("robot-position", round(leftRobotPosition.getX()), round(leftRobotPosition.getY()), round(rightRobotPosition.getX()), round(rightRobotPosition.getY()), round(robotPosition.getX()), round(robotPosition.getY()));
 

@@ -7,14 +7,12 @@ org/team1619/utilities/Vector.java
  org.team1619.utilities.Vector
 org/team1619/utilities/Point.java
  org.team1619.utilities.Point
-org/team1619/SettingsHandler.java
- org.team1619.SettingsHandler
-org/team1619/Test.java
- org.team1619.Test
-org/team1619/web/WebServer.java
- org.team1619.web.WebServer
 org/team1619/Camera.java
  org.team1619.Camera
+org/team1619/Test.java
+ org.team1619.Test
+org/team1619/web/HttpStreamServer.java
+ org.team1619.web.HttpStreamServer
 org/team1619/web/ContextManager.java
  org.team1619.web.ContextManager
  org.team1619.web.ContextManager$Context
@@ -25,11 +23,13 @@ org/team1619/web/ContextManager.java
  org.team1619.web.ContextManager$Method
  org.team1619.web.ContextManager$Request
  org.team1619.web.ContextManager$Response
-org/team1619/Localization.java
- org.team1619.Localization
+org/team1619/SettingsHandler.java
+ org.team1619.SettingsHandler
+org/team1619/web/WebServer.java
+ org.team1619.web.WebServer
 org/team1619/ProcessedImage.java
  org.team1619.ProcessedImage
-org/team1619/web/HttpStreamServer.java
- org.team1619.web.HttpStreamServer
+org/team1619/Localization.java
+ org.team1619.Localization
 org/team1619/Main.java
  org.team1619.Main

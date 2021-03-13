@@ -51,6 +51,9 @@ public class SettingsHandler {
 
     public synchronized static void addUpdateListener(Consumer<String> listener) {
         UPDATE_LISTENERS.add(listener);
+        for(var key : DATA.keySet()) {
+            listener.accept(key);
+        }
     }
 
     public synchronized static double getDouble(String key, double defaultValue) {
