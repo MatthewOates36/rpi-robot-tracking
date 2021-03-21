@@ -21,10 +21,12 @@ public class Main {
 
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
-        Camera camera1 = new Camera(CameraDetector.getCameraFromId("USB 2.0 Camera: USB Camera (usb-0000:01:00.0-1.1)").getPaths().get(0), 0.3);
-        Camera camera2 = new Camera(CameraDetector.getCameraFromId("USB 2.0 Camera: USB Camera (usb-0000:01:00.0-1.2)").getPaths().get(0), 1.5);
-        Camera camera3 = new Camera(CameraDetector.getCameraFromId("USB 2.0 Camera: USB Camera (usb-0000:01:00.0-1.3)").getPaths().get(0), 3.1);
-        Camera camera4 = new Camera(CameraDetector.getCameraFromId("USB 2.0 Camera: USB Camera (usb-0000:01:00.0-1.4)").getPaths().get(0), 1.0);
+        //At 120: 14 and 11.3
+        //At 190.5: 8.9 and 7.2
+        Camera camera1 = new Camera(CameraDetector.getCameraFromId("USB 2.0 Camera: USB Camera (usb-0000:01:00.0-1.1)").getPaths().get(0), -0.4);
+        Camera camera2 = new Camera(CameraDetector.getCameraFromId("USB 2.0 Camera: USB Camera (usb-0000:01:00.0-1.2)").getPaths().get(0), 0.9);
+        Camera camera3 = new Camera(CameraDetector.getCameraFromId("USB 2.0 Camera: USB Camera (usb-0000:01:00.0-1.3)").getPaths().get(0), 1.3);
+        Camera camera4 = new Camera(CameraDetector.getCameraFromId("USB 2.0 Camera: USB Camera (usb-0000:01:00.0-1.4)").getPaths().get(0), -0.3);
 
         List<Camera> cameras = List.of(camera1, camera3, camera4, camera2);
 
@@ -74,7 +76,7 @@ public class Main {
         while (true) {
             long delta = System.currentTimeMillis() - startTime;
             if (delta > 5000) {
-//                System.out.println("Loops: " + count + " Average loop time: " + (delta / count));
+                System.out.println("Loops: " + count + " Average loop time: " + (delta / count));
 
                 count = 0;
                 startTime = System.currentTimeMillis();
@@ -97,7 +99,7 @@ public class Main {
 
             var robotPosition = new Vector(leftRobotPosition.add(rightRobotPosition)).scale(0.5);
 
-            robotConnection.update(images.stream().allMatch(ProcessedImage::hasValidContour) && -100 < robotPosition.getX() && robotPosition.getX() < 600 && -400 < robotPosition.getY() && robotPosition.getY() < 400 && leftRobotPosition.distance(rightRobotPosition) < 20, robotPosition.getX(), -robotPosition.getY());
+            robotConnection.update(images.stream().allMatch(ProcessedImage::hasValidContour) && -100 < robotPosition.getX() && robotPosition.getX() < 600 && -400 < robotPosition.getY() && robotPosition.getY() < 400 && leftRobotPosition.distance(rightRobotPosition) < 40, robotPosition.getX(), -robotPosition.getY());
 
             server.setValue("robot-position", round(leftRobotPosition.getX()), round(leftRobotPosition.getY()), round(rightRobotPosition.getX()), round(rightRobotPosition.getY()), round(robotPosition.getX()), round(robotPosition.getY()));
 

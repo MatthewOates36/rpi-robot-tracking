@@ -103,7 +103,7 @@ public class ProcessedImage {
         var x = contour.x * 100 / (double) (SettingsHandler.getCameraWidth());
         var y = contour.y * 100 / (double) (SettingsHandler.getCameraHeight());
 
-        return SettingsHandler.getDouble("Size:low") <= size && size <= SettingsHandler.getDouble("Size:high") &&
+        return (SettingsHandler.getDouble("Size:low") / 1000.0) <= size && size <= (SettingsHandler.getDouble("Size:high") / 1000.0) &&
                 SettingsHandler.getDouble("W/H Ratio:low") <= ratio && ratio <= SettingsHandler.getDouble("W/H Ratio:high") &&
                 SettingsHandler.getDouble("X Range:low") <= x && x <= SettingsHandler.getDouble("X Range:high") &&
                 SettingsHandler.getDouble("Y Range:low") <= y && y <= SettingsHandler.getDouble("Y Range:high");
