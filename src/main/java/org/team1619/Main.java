@@ -26,7 +26,7 @@ public class Main {
         Camera camera3 = new Camera(CameraDetector.getCameraFromId("USB 2.0 Camera: USB Camera (usb-0000:01:00.0-1.3)").getPaths().get(0), 3.1);
         Camera camera4 = new Camera(CameraDetector.getCameraFromId("USB 2.0 Camera: USB Camera (usb-0000:01:00.0-1.4)").getPaths().get(0), 1.0);
 
-        List<Camera> cameras = List.of(camera1, camera2, camera3, camera4);
+        List<Camera> cameras = List.of(camera1, camera3, camera4, camera2);
 
         cameras.forEach(c -> c.setProperty("exposure_auto", 1));
         cameras.forEach(c -> c.setProperty("white_balance_temperature_auto", 0));
@@ -81,7 +81,7 @@ public class Main {
             }
             count++;
 
-            var images = cameras.stream().parallel().map(Camera::captureProcessed).collect(Collectors.toList());
+            var images = cameras.stream().sequential().map(Camera::captureProcessedSync).collect(Collectors.toList());
 
             String positionString = "";
 
@@ -92,12 +92,12 @@ public class Main {
 
             server.setValue("position", positionString);
 
-            var leftRobotPosition = leftLocalization.update(images.get(0).getContourPosition().getX(), images.get(2).getContourPosition().getX());
-            var rightRobotPosition = rightLocalization.update(images.get(1).getContourPosition().getX(), images.get(3).getContourPosition().getX());
+            var leftRobotPosition = leftLocalization.update(images.get(0).getContourPosition().getX(), images.get(1).getContourPosition().getX());
+            var rightRobotPosition = rightLocalization.update(images.get(3).getContourPosition().getX(), images.get(2).getContourPosition().getX());
 
             var robotPosition = new Vector(leftRobotPosition.add(rightRobotPosition)).scale(0.5);
 
-            robotConnection.update(images.stream().allMatch(ProcessedImage::hasValidContour), robotPosition.getX(), -robotPosition.getY());
+            robotConnection.update(images.stream().allMatch(ProcessedImage::hasValidContour) && -100 < robotPosition.getX() && robotPosition.getX() < 600 && -400 < robotPosition.getY() && robotPosition.getY() < 400 && leftRobotPosition.distance(rightRobotPosition) < 20, robotPosition.getX(), -robotPosition.getY());
 
             server.setValue("robot-position", round(leftRobotPosition.getX()), round(leftRobotPosition.getY()), round(rightRobotPosition.getX()), round(rightRobotPosition.getY()), round(robotPosition.getX()), round(robotPosition.getY()));
 

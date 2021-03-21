@@ -27,22 +27,22 @@ public class Camera {
         image = new Mat();
         imageUpdated = false;
 
-        new Thread(() -> {
-            var tempImage = new Mat();
+//        new Thread(() -> {
+//            var tempImage = new Mat();
+//
+//            while (true) {
+//                capture.read(tempImage);
+//
+//                synchronized (this) {
+//                    tempImage.copyTo(image);
+//
+//                    imageUpdated = true;
+//                    this.notifyAll();
+//                }
+//            }
+//        }).start();
 
-            while (true) {
-                capture.read(tempImage);
-
-                synchronized (this) {
-                    tempImage.copyTo(image);
-
-                    imageUpdated = true;
-                    this.notifyAll();
-                }
-            }
-        }).start();
-
-        capture().release();
+        captureSync().release();
     }
 
     public Camera(String id) {
@@ -64,8 +64,26 @@ public class Camera {
         return image.clone();
     }
 
+    public Mat captureSync() {
+        var tempImage = new Mat();
+
+        capture.read(tempImage);
+
+        return tempImage;
+    }
+
     public ProcessedImage captureProcessed() {
         var raw = capture();
+
+        var processed = new ProcessedImage(raw, angleOffset);
+
+        raw.release();
+
+        return processed;
+    }
+
+    public ProcessedImage captureProcessedSync() {
+        var raw = captureSync();
 
         var processed = new ProcessedImage(raw, angleOffset);
 

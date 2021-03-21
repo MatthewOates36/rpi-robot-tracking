@@ -72,7 +72,7 @@ task run {
     doLast {
         ssh.run {
 //            export LD_LIBRARY_PATH="/home/pi/libs:$LD_LIBRARY_PATH"
-//            java -Djava.library.path="libs/" -jar rpi-robot-tracking.jar
+//            java -Djava.library.path="/home/pi/libs/" -jar rpi-robot-tracking.jar
             session(remotes.server) {
                 execute 'sudo ./run.sh', ignoreError: true
             }
