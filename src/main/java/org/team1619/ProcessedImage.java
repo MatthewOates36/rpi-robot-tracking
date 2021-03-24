@@ -2,6 +2,7 @@ package org.team1619;
 
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
+import org.team1619.utilities.Point;
 import org.team1619.utilities.Vector;
 
 import java.util.ArrayList;
@@ -59,7 +60,8 @@ public class ProcessedImage {
             var tl = boundingRectangle.tl();
             var br = boundingRectangle.br();
 
-            contourPosition = new Vector(-angleFromImagePosition(((tl.x + br.x) / 2.0) - (SettingsHandler.getCameraWidth() / 2.0)) - angleOffset, -angleFromImagePosition(((tl.y + br.y) / 2.0) - (SettingsHandler.getCameraHeight() / 2.0)));
+            contourPosition = new Vector(new Point(-xAngleFromImagePosition(((tl.x + br.x) / 2.0) - (SettingsHandler.getCameraWidth() / 2.0)) - angleOffset, -yAngleFromImagePosition(((tl.y + br.y) / 2.0) - (SettingsHandler.getCameraHeight() / 2.0))));
+//            contourPosition = new Vector(new Point(-xAngleFromImagePosition(((tl.x + br.x) / 2.0) - (SettingsHandler.getCameraWidth() / 2.0)) - angleOffset, -(((tl.y + br.y) / 2.0) - (SettingsHandler.getCameraHeight() / 2.0))));
 
             hasValidContour = true;
         }
@@ -73,8 +75,12 @@ public class ProcessedImage {
         this(img, 0.0);
     }
 
-    private static double angleFromImagePosition(double position) {
+    private static double xAngleFromImagePosition(double position) {
         return 139.73888 / SettingsHandler.getCameraWidth() * position;
+    }
+
+    private static double yAngleFromImagePosition(double position) {
+        return 104.0778188 / SettingsHandler.getCameraHeight() * position;
     }
 
     private static Rect filterContours(ArrayList<MatOfPoint> contours, boolean release) {

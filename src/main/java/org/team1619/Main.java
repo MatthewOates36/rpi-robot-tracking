@@ -23,12 +23,16 @@ public class Main {
 
         //At 120: 14 and 11.3
         //At 190.5: 8.9 and 7.2
-        Camera camera1 = new Camera(CameraDetector.getCameraFromId("USB 2.0 Camera: USB Camera (usb-0000:01:00.0-1.1)").getPaths().get(0), -0.4);
-        Camera camera2 = new Camera(CameraDetector.getCameraFromId("USB 2.0 Camera: USB Camera (usb-0000:01:00.0-1.2)").getPaths().get(0), 0.9);
-        Camera camera3 = new Camera(CameraDetector.getCameraFromId("USB 2.0 Camera: USB Camera (usb-0000:01:00.0-1.3)").getPaths().get(0), 1.3);
-        Camera camera4 = new Camera(CameraDetector.getCameraFromId("USB 2.0 Camera: USB Camera (usb-0000:01:00.0-1.4)").getPaths().get(0), -0.3);
+//        Camera camera = new Camera(CameraDetector.getCameraFromId("USB 2.0 Camera: USB Camera (usb-0000:01:00.0-1.2)").getPaths().get(0), 0.0);
+//        Camera camera = new Camera(CameraDetector.getCameraFromId("USB 2.0 Camera: HD USB Camera (usb-0000:01:00.0-1.2)").getPaths().get(0), 0.0);
 
-        List<Camera> cameras = List.of(camera1, camera3, camera4, camera2);
+        Camera camera = new Camera(1);
+
+        var img = camera.captureSync();
+        System.out.println(img.width() + " x " + img.height());
+        img.release();
+
+        List<Camera> cameras = List.of(camera);
 
         cameras.forEach(c -> c.setProperty("exposure_auto", 1));
         cameras.forEach(c -> c.setProperty("white_balance_temperature_auto", 0));
@@ -69,6 +73,7 @@ public class Main {
         System.out.println("Running");
 
         long startTime = System.currentTimeMillis();
+        long processingTime = 0;
         int count = 0;
 
         var resized = new Mat();
@@ -76,14 +81,22 @@ public class Main {
         while (true) {
             long delta = System.currentTimeMillis() - startTime;
             if (delta > 5000) {
-                System.out.println("Loops: " + count + " Average loop time: " + (delta / count));
 
+                System.out.println("Average: " + (delta / count) + " Average Processing: " + (processingTime / count) + " Loops: " + count);
+
+                processingTime = 0;
                 count = 0;
                 startTime = System.currentTimeMillis();
             }
             count++;
 
-            var images = cameras.stream().sequential().map(Camera::captureProcessedSync).collect(Collectors.toList());
+//            var images = cameras.stream().sequential().map(Camera::captureProcessedSync).collect(Collectors.toList());
+
+            var imgs = cameras.stream().sequential().map(Camera::captureSync).collect(Collectors.toList());
+
+            var startProcessing = System.currentTimeMillis();
+
+            var images = imgs.stream().map(i -> new ProcessedImage(i, 0.0)).collect(Collectors.toList());
 
             String positionString = "";
 
@@ -94,14 +107,13 @@ public class Main {
 
             server.setValue("position", positionString);
 
-            var leftRobotPosition = leftLocalization.update(images.get(0).getContourPosition().getX(), images.get(1).getContourPosition().getX());
-            var rightRobotPosition = rightLocalization.update(images.get(3).getContourPosition().getX(), images.get(2).getContourPosition().getX());
+            var contourPosition = images.get(0).getContourPosition();
 
-            var robotPosition = new Vector(leftRobotPosition.add(rightRobotPosition)).scale(0.5);
+            var robotPosition = new Vector(65 / Math.tan(Math.toRadians(-contourPosition.getY() + 2.6)), -contourPosition.getX());
 
-            robotConnection.update(images.stream().allMatch(ProcessedImage::hasValidContour) && -100 < robotPosition.getX() && robotPosition.getX() < 600 && -400 < robotPosition.getY() && robotPosition.getY() < 400 && leftRobotPosition.distance(rightRobotPosition) < 40, robotPosition.getX(), -robotPosition.getY());
+            robotConnection.update(images.stream().allMatch(ProcessedImage::hasValidContour) && -100 < robotPosition.getX() && robotPosition.getX() < 600 && -400 < robotPosition.getY() && robotPosition.getY() < 400, robotPosition.getX(), -robotPosition.getY());
 
-            server.setValue("robot-position", round(leftRobotPosition.getX()), round(leftRobotPosition.getY()), round(rightRobotPosition.getX()), round(rightRobotPosition.getY()), round(robotPosition.getX()), round(robotPosition.getY()));
+//            server.setValue("robot-position", round(leftRobotPosition.getX()), round(leftRobotPosition.getY()), round(rightRobotPosition.getX()), round(rightRobotPosition.getY()), round(robotPosition.getX()), round(robotPosition.getY()));
 
             if(stream.connected()) {
                 var finalImages = images.stream().parallel().map(ProcessedImage::getProcessedImage).collect(Collectors.toList());
@@ -129,6 +141,8 @@ public class Main {
             }
 
             images.forEach(ProcessedImage::release);
+
+            processingTime += System.currentTimeMillis() - startProcessing;
         }
     }
 

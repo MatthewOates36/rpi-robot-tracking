@@ -17,6 +17,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/src/main/java/org/team1619/ProcessedImage.java">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/src/main/java/org/team1619/SettingsHandler.java">
           <value>
             <Attribute>

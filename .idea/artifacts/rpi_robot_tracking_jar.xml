@@ -4,7 +4,7 @@
     <root id="root">
       <element id="archive" name="rpi-robot-tracking.jar">
         <element id="module-output" name="rpi-robot-tracking" />
-        <element id="extracted-dir" path="$PROJECT_DIR$/libs/opencv-440.jar" path-in-jar="/" />
+        <element id="extracted-dir" path="$PROJECT_DIR$/oldlibs/opencv-440.jar" path-in-jar="/" />
         <element id="extracted-dir" path="$PROJECT_DIR$/libs/json.jar" path-in-jar="/" />
       </element>
     </root>

@@ -237,3 +237,5 @@ getData('/api/ui-config').then(json => {
         }
     }
 })
+
+$("#video").css("background-image", `url("http://${window.location.hostname}:5800")`)
