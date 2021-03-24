@@ -4,8 +4,8 @@
     "key": "Exposure",
     "camera": 0,
     "config": {
-      "min": 1,
-      "max": 200
+      "min": -15,
+      "max": 0
     }
   },
   {
@@ -168,7 +168,7 @@
     "key": "robot-position",
     "camera": 0,
     "config": {
-      "format": "Left: ({}, {})  Right: ({}, {})  Robot Position: ({}, {})"
+      "format": "Robot Position: ({}, {})"
     }
   },
   {

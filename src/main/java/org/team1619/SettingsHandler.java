@@ -42,14 +42,16 @@ public class SettingsHandler {
     }
 
     public static int getCameraWidth() {
-        return 640;
-//        return 1280;
+//        return 640;
+//        return 800;
+        return 1280;
 //        return 3264;
     }
 
     public static int getCameraHeight() {
-        return 480;
-//        return 960;
+//        return 480;
+//        return 600;
+        return 720;
 //        return 2448;
     }
 

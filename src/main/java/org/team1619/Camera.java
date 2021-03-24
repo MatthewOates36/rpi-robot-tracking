@@ -75,10 +75,7 @@ public class Camera {
 //            }
 //        }).start();
 
-        captureSync().release();
-
-        capture.set(21, 0.25);
-        capture.set(15, 0.01);
+        capture.set(21, 0.0);
 
 //        while (capture.get(15) != -1) {
 //            captureSync().release();
@@ -115,7 +112,7 @@ public class Camera {
     public ProcessedImage captureProcessed() {
         var raw = capture();
 
-        var processed = new ProcessedImage(raw, angleOffset);
+        var processed = new ProcessedImage(raw, angleOffset, 0.0);
 
         raw.release();
 
@@ -125,24 +122,15 @@ public class Camera {
     public ProcessedImage captureProcessedSync() {
         var raw = captureSync();
 
-        var processed = new ProcessedImage(raw, angleOffset);
+        var processed = new ProcessedImage(raw, angleOffset, 0.0);
 
         raw.release();
 
         return processed;
     }
 
-    public void setProperty(String property, int value) {
-        setProperty(getId(), property, value);
-    }
-
-    public void setProperty(String id, String property, int value) {
-//        try {
-//            var process = Runtime.getRuntime().exec(String.format("v4l2-ctl -d %s --set-ctrl=%s=%s", id, property, value));
-//            process.waitFor();
-//        } catch (IOException | InterruptedException e) {
-//            e.printStackTrace();
-//        }
+    public void setProperty(int property, double value) {
+        capture.set(property, value);
     }
 
     public String getId() {

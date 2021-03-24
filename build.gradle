@@ -24,7 +24,7 @@ dependencies {
 
     jarLibs "edu.wpi.first.ntcore:ntcore-java:2021.2.2"
     jarLibs "edu.wpi.first.wpiutil:wpiutil-java:2021.2.2"
-    jarLibs "edu.wpi.first.ntcore:ntcore-jni:2021.2.2:osxx86-64"
+    jarLibs "edu.wpi.first.ntcore:ntcore-jni:2021.2.2:windowsx86-64"
 }
 
 jar {

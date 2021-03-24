@@ -143,7 +143,7 @@ public class ContextManager implements HttpHandler {
 
         if (null != file) {
             String mime = "";
-            String filePathString = file.toString();
+            String filePathString = file.toString().replace("\\", "/");
             if (filePathString.endsWith(".html")) {
                 mime = "text/html";
             } else if (filePathString.endsWith(".js")) {
@@ -156,7 +156,7 @@ public class ContextManager implements HttpHandler {
 
             try {
                 if (resource) {
-                    res.body(getClass().getResourceAsStream(file.toString()).readAllBytes());
+                    res.body(getClass().getResourceAsStream(file.toString().replace("\\", "/")).readAllBytes());
                 } else {
                     res.body(Files.readAllBytes(file));
                 }

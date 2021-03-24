@@ -26,7 +26,7 @@ public class Main {
 //        Camera camera = new Camera(CameraDetector.getCameraFromId("USB 2.0 Camera: USB Camera (usb-0000:01:00.0-1.2)").getPaths().get(0), 0.0);
 //        Camera camera = new Camera(CameraDetector.getCameraFromId("USB 2.0 Camera: HD USB Camera (usb-0000:01:00.0-1.2)").getPaths().get(0), 0.0);
 
-        Camera camera = new Camera(1);
+        Camera camera = new Camera(0);
 
         var img = camera.captureSync();
         System.out.println(img.width() + " x " + img.height());
@@ -34,29 +34,29 @@ public class Main {
 
         List<Camera> cameras = List.of(camera);
 
-        cameras.forEach(c -> c.setProperty("exposure_auto", 1));
-        cameras.forEach(c -> c.setProperty("white_balance_temperature_auto", 0));
+//        cameras.forEach(c -> c.setProperty("exposure_auto", 1));
+        cameras.forEach(c -> c.setProperty(44, 0));
 
         SettingsHandler.addUpdateListener((key) -> {
             switch (key) {
                 case "Exposure": {
-                    cameras.forEach(c -> c.setProperty("exposure_absolute", (int) SettingsHandler.getDouble(key)));
+                    cameras.forEach(c -> c.setProperty(15, SettingsHandler.getDouble(key)));
                     break;
                 }
                 case "Brightness": {
-                    cameras.forEach(c -> c.setProperty("brightness", (int) SettingsHandler.getDouble(key)));
+                    cameras.forEach(c -> c.setProperty(10, SettingsHandler.getDouble(key)));
                     break;
                 }
                 case "Contrast": {
-                    cameras.forEach(c -> c.setProperty("contrast", (int) SettingsHandler.getDouble(key)));
+                    cameras.forEach(c -> c.setProperty(11, SettingsHandler.getDouble(key)));
                     break;
                 }
                 case "White Bal": {
-                    cameras.forEach(c -> c.setProperty("white_balance_temperature", (int) SettingsHandler.getDouble(key)));
+                    cameras.forEach(c -> c.setProperty(45, SettingsHandler.getDouble(key)));
                     break;
                 }
                 case "Cam Hue": {
-                    cameras.forEach(c -> c.setProperty("hue", (int) SettingsHandler.getDouble(key)));
+                    cameras.forEach(c -> c.setProperty(13, SettingsHandler.getDouble(key)));
                     break;
                 }
             }
@@ -96,7 +96,7 @@ public class Main {
 
             var startProcessing = System.currentTimeMillis();
 
-            var images = imgs.stream().map(i -> new ProcessedImage(i, 0.0)).collect(Collectors.toList());
+            var images = imgs.stream().map(i -> new ProcessedImage(i, 0, 28)).collect(Collectors.toList());
 
             String positionString = "";
 
@@ -109,11 +109,11 @@ public class Main {
 
             var contourPosition = images.get(0).getContourPosition();
 
-            var robotPosition = new Vector(65 / Math.tan(Math.toRadians(-contourPosition.getY() + 2.6)), -contourPosition.getX());
+            var robotPosition = new Vector(63 / Math.tan(Math.toRadians(-contourPosition.getY())), -contourPosition.getX());
 
             robotConnection.update(images.stream().allMatch(ProcessedImage::hasValidContour) && -100 < robotPosition.getX() && robotPosition.getX() < 600 && -400 < robotPosition.getY() && robotPosition.getY() < 400, robotPosition.getX(), -robotPosition.getY());
 
-//            server.setValue("robot-position", round(leftRobotPosition.getX()), round(leftRobotPosition.getY()), round(rightRobotPosition.getX()), round(rightRobotPosition.getY()), round(robotPosition.getX()), round(robotPosition.getY()));
+            server.setValue("robot-position", round(robotPosition.getX()), round(robotPosition.getY()));
 
             if(stream.connected()) {
                 var finalImages = images.stream().parallel().map(ProcessedImage::getProcessedImage).collect(Collectors.toList());
@@ -129,9 +129,11 @@ public class Main {
 
                 double scale = 1.0;
 
-                Imgproc.resize(combined, resized, new Size(combined.width() / scale, combined.height() / scale));
+                if(!combined.empty()) {
+                    Imgproc.resize(combined, resized, new Size(combined.width() / scale, combined.height() / scale));
 
-                stream.setImage(resized);
+                    stream.setImage(resized);
+                }
 
                 finalImages.forEach(Mat::release);
 

@@ -14,7 +14,7 @@ public class ProcessedImage {
     private boolean hasValidContour;
     private Vector contourPosition;
 
-    public ProcessedImage(Mat img, double angleOffset) {
+    public ProcessedImage(Mat img, double xOffset, double yOffset) {
         image = img.clone();
 
         boundingRectangle = null;
@@ -60,8 +60,8 @@ public class ProcessedImage {
             var tl = boundingRectangle.tl();
             var br = boundingRectangle.br();
 
-            contourPosition = new Vector(new Point(-xAngleFromImagePosition(((tl.x + br.x) / 2.0) - (SettingsHandler.getCameraWidth() / 2.0)) - angleOffset, -yAngleFromImagePosition(((tl.y + br.y) / 2.0) - (SettingsHandler.getCameraHeight() / 2.0))));
-//            contourPosition = new Vector(new Point(-xAngleFromImagePosition(((tl.x + br.x) / 2.0) - (SettingsHandler.getCameraWidth() / 2.0)) - angleOffset, -(((tl.y + br.y) / 2.0) - (SettingsHandler.getCameraHeight() / 2.0))));
+            contourPosition = new Vector(new Point(-xAngleFromImagePosition(((tl.x + br.x) / 2.0) - (SettingsHandler.getCameraWidth() / 2.0)) - xOffset, -yAngleFromImagePosition(((tl.y + br.y) / 2.0) - (SettingsHandler.getCameraHeight() / 2.0)) - yOffset));
+//            contourPosition = new Vector(new Point(((tl.x + br.x) / 2.0) - (SettingsHandler.getCameraWidth() / 2.0), ((tl.y + br.y) / 2.0) - (SettingsHandler.getCameraHeight() / 2.0)));
 
             hasValidContour = true;
         }
@@ -72,15 +72,15 @@ public class ProcessedImage {
     }
 
     public ProcessedImage(Mat img) {
-        this(img, 0.0);
+        this(img, 0.0, 0.0);
     }
 
     private static double xAngleFromImagePosition(double position) {
-        return 139.73888 / SettingsHandler.getCameraWidth() * position;
+        return 77.98914 / SettingsHandler.getCameraWidth() * position;
     }
 
     private static double yAngleFromImagePosition(double position) {
-        return 104.0778188 / SettingsHandler.getCameraHeight() * position;
+        return 46.34587 / SettingsHandler.getCameraHeight() * position;
     }
 
     private static Rect filterContours(ArrayList<MatOfPoint> contours, boolean release) {
