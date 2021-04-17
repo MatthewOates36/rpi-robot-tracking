@@ -44,15 +44,15 @@ public class SettingsHandler {
     public static int getCameraWidth() {
 //        return 640;
 //        return 800;
-        return 1280;
-//        return 3264;
+//        return 1280;
+        return 1920;
     }
 
     public static int getCameraHeight() {
 //        return 480;
 //        return 600;
-        return 720;
-//        return 2448;
+//        return 720;
+        return 1080;
     }
 
     public synchronized static void addUpdateListener(Consumer<String> listener) {

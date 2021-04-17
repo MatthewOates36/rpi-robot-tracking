@@ -13,17 +13,27 @@ public class ProcessedImage {
     private Rect boundingRectangle;
     private boolean hasValidContour;
     private Vector contourPosition;
+    private int top;
+    private int width;
+    private int height;
 
     public ProcessedImage(Mat img, double xOffset, double yOffset) {
-        image = img.clone();
-
         boundingRectangle = null;
         hasValidContour = false;
         contourPosition = new Vector();
+        width = 0;
+        height = 0;
 
-        if (image.empty()) {
+        if (img.empty()) {
+            image = new Mat();
             return;
         }
+
+        top = 580;
+
+        image = new Mat(img,  new Rect(450, top, 1020, 440));
+        width = image.width();
+        height = image.height();
 
         var hsv = new Mat();
         var threshold = new Mat();
@@ -60,8 +70,8 @@ public class ProcessedImage {
             var tl = boundingRectangle.tl();
             var br = boundingRectangle.br();
 
-            contourPosition = new Vector(new Point(-xAngleFromImagePosition(((tl.x + br.x) / 2.0) - (SettingsHandler.getCameraWidth() / 2.0)) - xOffset, -yAngleFromImagePosition(((tl.y + br.y) / 2.0) - (SettingsHandler.getCameraHeight() / 2.0)) - yOffset));
-//            contourPosition = new Vector(new Point(((tl.x + br.x) / 2.0) - (SettingsHandler.getCameraWidth() / 2.0), ((tl.y + br.y) / 2.0) - (SettingsHandler.getCameraHeight() / 2.0)));
+            contourPosition = new Vector(new Point(-xAngleFromImagePosition(((tl.x + br.x) / 2.0) - (width / 2.0)) - xOffset, -yAngleFromImagePosition(top + ((tl.y + br.y) / 2.0) - (SettingsHandler.getCameraHeight() / 2.0)) - yOffset));
+//            contourPosition = new Vector(new Point(((tl.x + br.x) / 2.0) - (width / 2.0), ((tl.y + br.y) / 2.0) - (height / 2.0)));
 
             hasValidContour = true;
         }
@@ -76,11 +86,11 @@ public class ProcessedImage {
     }
 
     private static double xAngleFromImagePosition(double position) {
-        return 77.98914 / SettingsHandler.getCameraWidth() * position;
+        return 163.6861888 / SettingsHandler.getCameraWidth() * position;
     }
 
     private static double yAngleFromImagePosition(double position) {
-        return 46.34587 / SettingsHandler.getCameraHeight() * position;
+        return 85.08354491 / SettingsHandler.getCameraHeight() * position;
     }
 
     private static Rect filterContours(ArrayList<MatOfPoint> contours, boolean release) {

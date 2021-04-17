@@ -96,7 +96,7 @@ public class Main {
 
             var startProcessing = System.currentTimeMillis();
 
-            var images = imgs.stream().map(i -> new ProcessedImage(i, 0, 28)).collect(Collectors.toList());
+            var images = imgs.stream().map(i -> new ProcessedImage(i, 0, 0)).collect(Collectors.toList());
 
             String positionString = "";
 
@@ -109,7 +109,8 @@ public class Main {
 
             var contourPosition = images.get(0).getContourPosition();
 
-            var robotPosition = new Vector(63 / Math.tan(Math.toRadians(-contourPosition.getY())), -contourPosition.getX());
+//            var robotPosition = new Vector(64.5 / Math.tan(Math.toRadians(-contourPosition.getY())), -contourPosition.getX());
+            var robotPosition = new Vector(63.5 / Math.tan(Math.toRadians(-contourPosition.getY())), -contourPosition.getX());
 
             robotConnection.update(images.stream().allMatch(ProcessedImage::hasValidContour) && -100 < robotPosition.getX() && robotPosition.getX() < 600 && -400 < robotPosition.getY() && robotPosition.getY() < 400, robotPosition.getX(), -robotPosition.getY());
 
@@ -145,6 +146,8 @@ public class Main {
             images.forEach(ProcessedImage::release);
 
             processingTime += System.currentTimeMillis() - startProcessing;
+
+            Runtime.getRuntime().gc();
         }
     }
 

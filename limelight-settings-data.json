@@ -1,5 +1,5 @@
 {
-    "Brightness": "-20.14",
+    "Brightness": "126.19",
     "threshold": "Threshold",
     "X Range:low": "0.00",
     "Hue:high": "126.93",
@@ -7,11 +7,11 @@
     "Saturation:high": "255.00",
     "X Range:high": "100.00",
     "Threshold": "0.03",
-    "Hue:low": "41.08",
+    "Hue:low": "0.00",
     "Size:high": "100000.00",
     "Value:high": "255.00",
-    "Value:low": "37.45",
-    "Exposure": "-11.14",
+    "Value:low": "90.49",
+    "Exposure": "-12.92",
     "Contrast": "25.32",
     "contours": "Show",
     "White Bal": "5047.23",
@@ -21,7 +21,7 @@
     "filter": "largest",
     "threshold-menu": "threshold",
     "Size:low": "0.00",
-    "Saturation:low": "145.36",
+    "Saturation:low": "0.00",
     "Contours": "0.10",
     "Y Range:low": "0.00"
 }
